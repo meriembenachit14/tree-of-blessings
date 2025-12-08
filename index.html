@@ -27,7 +27,7 @@
       position: relative;
       width: 300px;
       height: 400px;
-      background: url('https://i.ibb.co/6RtYHpj/tree.png') no-repeat center bottom;
+      background: url('tree.jpeg') no-repeat center bottom;
       background-size: contain;
     }
 
@@ -87,62 +87,29 @@
   <div id="message">Click a leaf to receive a blessing!</div>
 
   <script>
-    const surahs = [
-      "Al-Fatiha (1:1-7)",
-      "Al-Ikhlas (112)",
-      "Al-Falaq (113)",
-      "An-Nas (114)",
-      "Al-Asr (103:1-3)",
-      "Al-Kawthar (108)",
-      "Al-Ma'un (107)",
-      "Al-Qadr (97)",
-      "Al-Bayyinah (98)",
-      "Al-Zalzalah (99)",
-      "Al-Adiyat (100)",
-      "Al-Qari'ah (101)",
-      "At-Takathur (102)",
-      "Al-Humazah (104)",
-      "Al-Fil (105)",
-      "Quraish (106)"
+    const blessings = [
+      // Surahs
+      "Al-Fatiha (1:1-7): In the name of Allah, the Most Gracious, the Most Merciful. Praise be to Allah, Lord of the worlds...",
+      "Al-Ikhlas (112): Say: He is Allah, the One and Only; Allah, the Eternal, Absolute; He begets not, nor is He begotten; And there is none comparable to Him.",
+      "Al-Asr (103:1-3): By time, indeed mankind is in loss, except for those who have believed and done righteous deeds and advised each other to truth and patience.",
+      "Al-Falaq (113): Say: I seek refuge in the Lord of daybreak from the evil of what He created...",
+      "An-Nas (114): Say: I seek refuge in the Lord of mankind, the Sovereign of mankind, the God of mankind, from the evil of the whisperer who withdraws.",
+
+      // Duas
+      "Dua: May Allah bless you with health, happiness, and guidance in every step.",
+      "Dua: May your deeds be accepted and your heart filled with tranquility.",
+      "Dua: May Allah protect you and your family from all harm.",
+      "Dua: May your life be filled with barakah, peace, and joy.",
+      "Dua: May Allah grant you wisdom, patience, and success in all matters.",
+
+      // Hadiths
+      "Hadith (Sahih Bukhari 6011): The Prophet Muhammad (ﷺ) said: 'The best of you are those who are best to their families.'",
+      "Hadith (Sahih Muslim 2564): The Messenger of Allah (ﷺ) said: 'Actions are judged by intentions, and everyone will be rewarded according to what he intended.'",
+      "Hadith (Riyad as-Salihin 14): 'A good word is charity.'",
+      "Hadith (Sunan Abu Dawood 2841): 'Smile at your brother is charity.'",
+      "Hadith (Sahih Bukhari 5685): 'Seek knowledge from cradle to grave.'"
     ];
 
-    const duas = [
-      "May Allah grant you peace and happiness.",
-      "May your heart always be guided.",
-      "May Allah bless your family and friends.",
-      "May you be protected from all harm.",
-      "May your deeds be accepted.",
-      "May Allah grant you wisdom and patience.",
-      "May your home be filled with barakah.",
-      "May your day be full of joy and gratitude.",
-      "May you find strength in every challenge.",
-      "May Allah guide you to goodness and success.",
-      "May your efforts be rewarded.",
-      "May you have a happy and healthy life.",
-      "May Allah grant you love and compassion.",
-      "May you be surrounded by good company.",
-      "May your intentions always be pure."
-    ];
-
-    const hadiths = [
-      "'The best of you are those who are best to their families.'",
-      "'Actions are judged by intentions.'",
-      "'The strong believer is better than the weak believer.'",
-      "'Smile at your brother is charity.'",
-      "'Seek knowledge from cradle to grave.'",
-      "'None of you truly believes until he wishes for his brother what he wishes for himself.'",
-      "'He who does not show mercy to others will not be shown mercy.'",
-      "'The most beloved of deeds to Allah is bringing happiness to a believer.'",
-      "'A good word is charity.'",
-      "'Help your brother whether he is an oppressor or oppressed.'",
-      "'Pray as if it's your last prayer.'",
-      "'Be kind, for kindness is a mark of faith.'",
-      "'The best among you are those who learn the Qur’an and teach it.'",
-      "'Feed the hungry and visit the sick.'",
-      "'Lower your gaze and guard your modesty.'"
-    ];
-
-    const blessings = [...surahs, ...duas, ...hadiths];
     const leaves = document.querySelectorAll('.leaf');
     const message = document.getElementById('message');
 
@@ -151,9 +118,7 @@
         const randomIndex = Math.floor(Math.random() * blessings.length);
         message.textContent = blessings[randomIndex];
         message.style.opacity = 0;
-        setTimeout(() => {
-          message.style.opacity = 1;
-        }, 50);
+        setTimeout(() => { message.style.opacity = 1; }, 50);
 
         // Confetti effect
         for(let i=0;i<20;i++){
@@ -167,6 +132,7 @@
       });
     });
 
+    // Continuous falling leaves background
     function createFallingLeaf(){
       const leaf = document.createElement('div');
       leaf.classList.add('falling-leaf');
@@ -175,7 +141,6 @@
       document.body.appendChild(leaf);
       setTimeout(()=>leaf.remove(),6000);
     }
-
     setInterval(createFallingLeaf, 500);
   </script>
 </body>
