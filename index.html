@@ -58,7 +58,6 @@
       transition: opacity 0.5s ease-in-out;
     }
 
-    /* Falling leaves */
     .falling-leaf {
       position: absolute;
       width: 15px;
@@ -88,20 +87,65 @@
   <div id="message">Click a leaf to receive a blessing!</div>
 
   <script>
-    const blessings = [
-      "Surah Al-Fatiha (1:1-7) - The Opening",
-      "Surah Al-Ikhlas (112) - Sincerity",
-      "Hadith: 'The best of you are those who are best to their families.'",
-      "Dua: May Allah grant you peace and happiness.",
-      "Surah Al-Asr (103:1-3) - Time and patience",
-      "Hadith: 'Actions are judged by intentions.'",
-      "Dua: May your life be filled with blessings and guidance."
+    const surahs = [
+      "Al-Fatiha (1:1-7)",
+      "Al-Ikhlas (112)",
+      "Al-Falaq (113)",
+      "An-Nas (114)",
+      "Al-Asr (103:1-3)",
+      "Al-Kawthar (108)",
+      "Al-Ma'un (107)",
+      "Al-Qadr (97)",
+      "Al-Bayyinah (98)",
+      "Al-Zalzalah (99)",
+      "Al-Adiyat (100)",
+      "Al-Qari'ah (101)",
+      "At-Takathur (102)",
+      "Al-Humazah (104)",
+      "Al-Fil (105)",
+      "Quraish (106)"
     ];
 
+    const duas = [
+      "May Allah grant you peace and happiness.",
+      "May your heart always be guided.",
+      "May Allah bless your family and friends.",
+      "May you be protected from all harm.",
+      "May your deeds be accepted.",
+      "May Allah grant you wisdom and patience.",
+      "May your home be filled with barakah.",
+      "May your day be full of joy and gratitude.",
+      "May you find strength in every challenge.",
+      "May Allah guide you to goodness and success.",
+      "May your efforts be rewarded.",
+      "May you have a happy and healthy life.",
+      "May Allah grant you love and compassion.",
+      "May you be surrounded by good company.",
+      "May your intentions always be pure."
+    ];
+
+    const hadiths = [
+      "'The best of you are those who are best to their families.'",
+      "'Actions are judged by intentions.'",
+      "'The strong believer is better than the weak believer.'",
+      "'Smile at your brother is charity.'",
+      "'Seek knowledge from cradle to grave.'",
+      "'None of you truly believes until he wishes for his brother what he wishes for himself.'",
+      "'He who does not show mercy to others will not be shown mercy.'",
+      "'The most beloved of deeds to Allah is bringing happiness to a believer.'",
+      "'A good word is charity.'",
+      "'Help your brother whether he is an oppressor or oppressed.'",
+      "'Pray as if it's your last prayer.'",
+      "'Be kind, for kindness is a mark of faith.'",
+      "'The best among you are those who learn the Qur’an and teach it.'",
+      "'Feed the hungry and visit the sick.'",
+      "'Lower your gaze and guard your modesty.'"
+    ];
+
+    const blessings = [...surahs, ...duas, ...hadiths];
     const leaves = document.querySelectorAll('.leaf');
     const message = document.getElementById('message');
 
-    // Leaf click event
     leaves.forEach(leaf => {
       leaf.addEventListener('click', () => {
         const randomIndex = Math.floor(Math.random() * blessings.length);
@@ -123,7 +167,6 @@
       });
     });
 
-    // Optional: continuously falling leaves
     function createFallingLeaf(){
       const leaf = document.createElement('div');
       leaf.classList.add('falling-leaf');
