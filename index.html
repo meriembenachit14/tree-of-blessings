@@ -91,6 +91,12 @@ h1 {
   filter: drop-shadow(0 0 8px rgba(0,255,120,0.8));
 }
 
+@keyframes fall {
+  0% { transform: translateY(-50px) rotate(0deg); opacity:1; }
+  50% { transform: translateY(300px) rotate(180deg) translateX(20px); opacity:0.8; }
+  100% { transform: translateY(620px) rotate(360deg) translateX(-10px); opacity:0; }
+}
+
 /* SPARKLES */
 .sparkle {
   position: absolute;
@@ -168,21 +174,20 @@ h1 {
 <script>
 // FULL blessings array
 const blessings=[
-  // Short Surahs 101-114
-  {type:'surah', arabic:'القارعة', translit:'Al-Qari’ah (101)', english:'The Striking Calamity…'},
-  {type:'surah', arabic:'التكاثر', translit:'At-Takathur (102)', english:'Competition in worldly increase…'},
-  {type:'surah', arabic:'العصر', translit:'Al-Asr (103)', english:'By time, indeed mankind is in loss…'},
-  {type:'surah', arabic:'الهمزة', translit:'Al-Humazah (104)', english:'Woe to every scorner…'},
-  {type:'surah', arabic:'الفيل', translit:'Al-Fil (105)', english:'Have you not considered…'},
-  {type:'surah', arabic:'قريش', translit:'Quraysh (106)', english:'For the accustomed security of Quraysh…'},
-  {type:'surah', arabic:'الماعون', translit:'Al-Ma’un (107)', english:'Have you seen the one who denies…'},
-  {type:'surah', arabic:'الكوثر', translit:'Al-Kawthar (108)', english:'Indeed, We have granted you…'},
-  {type:'surah', arabic:'الكافرون', translit:'Al-Kafirun (109)', english:'Say, “O disbelievers…'},
-  {type:'surah', arabic:'النصر', translit:'An-Nasr (110)', english:'When the victory of Allah has come…'},
-  {type:'surah', arabic:'المسد', translit:'Al-Lahab (111)', english:'May the hands of Abu Lahab be ruined…'},
-  {type:'surah', arabic:'الإخلاص', translit:'Al-Ikhlas (112)', english:'Say, “He is Allah, One…'},
-  {type:'surah', arabic:'الفلق', translit:'Al-Falaq (113)', english:'Say, “I seek refuge in the Lord…'},
-  {type:'surah', arabic:'الناس', translit:'An-Nas (114)', english:'Say, “I seek refuge in the Lord of mankind…'},
+  {type:'surah', arabic:'القارعة', translit:'Al-Qari’ah (101)', english:'The Striking Calamity – What is the Striking Calamity? And what can make you know what is the Striking Calamity? The Day when people will be like scattered moths, And the mountains will be like wool fluffed up. Then as for one whose scales are heavy [with good deeds], He will be in a pleasant life. But as for one whose scales are light, His refuge will be an abyss.'},
+  {type:'surah', arabic:'التكاثر', translit:'At-Takathur (102)', english:'Competition in worldly increase diverts you. Until you visit the graves. No! You will surely know. Then no! You will surely know. No! If you only knew with certainty… You will surely see the Hellfire. Then you will surely see it with the eye of certainty.'},
+  {type:'surah', arabic:'العصر', translit:'Al-Asr (103)', english:'By time, Indeed, mankind is in loss, Except for those who believe and do righteous deeds and advise each other to truth and advise each other to patience.'},
+  {type:'surah', arabic:'الهمزة', translit:'Al-Humazah (104)', english:'Woe to every scorner and mocker Who collects wealth and [continuously] counts it. He thinks that his wealth will make him immortal. No! He will surely be thrown into the Crusher. And what can make you know what is the Crusher? It is the Fire of Allah, [eternally] fueled, Which mounts directed at the hearts. Indeed, it [Hellfire] will be closed down upon them In extended columns.'},
+  {type:'surah', arabic:'الفيل', translit:'Al-Fil (105)', english:'Have you not considered how your Lord dealt with the companions of the elephant? Did He not make their plan into misguidance? And He sent against them birds in flocks, Striking them with stones of hard clay, And made them like eaten straw.'},
+  {type:'surah', arabic:'قريش', translit:'Quraysh (106)', english:'For the accustomed security of the Quraysh – Their accustomed security [during] the caravan of winter and summer – Let them worship the Lord of this House, Who has fed them, [saving them] from hunger and made them safe, [saving them] from fear.'},
+  {type:'surah', arabic:'الماعون', translit:'Al-Ma’un (107)', english:'Have you seen the one who denies the Recompense? For that is the one who drives away the orphan, And does not encourage the feeding of the poor. So woe to those who pray [But] who are heedless of their prayer – Those who make show [of their deeds] And withhold [simple] assistance.'},
+  {type:'surah', arabic:'الكوثر', translit:'Al-Kawthar (108)', english:'Indeed, We have granted you, [O Muhammad], al-Kawthar. So pray to your Lord and sacrifice [to Him alone]. Indeed, your enemy is the one cut off.'},
+  {type:'surah', arabic:'الكافرون', translit:'Al-Kafirun (109)', english:'Say, “O disbelievers, I do not worship what you worship. Nor are you worshippers of what I worship. Nor will I be a worshipper of what you worship. Nor will you be worshippers of what I worship. For you is your religion, and for me is my religion.”'},
+  {type:'surah', arabic:'النصر', translit:'An-Nasr (110)', english:'When the victory of Allah has come and the conquest, And you see the people entering into the religion of Allah in multitudes, Then exalt [Him] with praise of your Lord and ask forgiveness of Him. Indeed, He is ever Accepting of repentance.'},
+  {type:'surah', arabic:'المسد', translit:'Al-Lahab (111)', english:'May the hands of Abu Lahab be ruined, and ruined is he. His wealth will not avail him or that which he gained. He will [enter to] burn in a Fire of [blazing] flame And his wife [as well] – the carrier of firewood. Around her neck is a rope of twisted fiber.'},
+  {type:'surah', arabic:'الإخلاص', translit:'Al-Ikhlas (112)', english:'Say, “He is Allah, [who is] One, Allah, the Eternal Refuge. He neither begets nor is born, Nor is there to Him any equivalent.”'},
+  {type:'surah', arabic:'الفلق', translit:'Al-Falaq (113)', english:'Say, “I seek refuge in the Lord of daybreak From the evil of that which He created And from the evil of darkness when it settles And from the evil of the blowers in knots And from the evil of an envier when he envies.”'},
+  {type:'surah', arabic:'الناس', translit:'An-Nas (114)', english:'Say, “I seek refuge in the Lord of mankind, The Sovereign of mankind, The God of mankind, From the evil of the whisperer who withdraws, Who whispers in the breasts of mankind, Of jinn and mankind.”'},
 
   // 20 Hadiths
   {type:'hadith', english:'“Actions are judged by intentions.” – Prophet ﷺ'},
@@ -216,7 +221,7 @@ const blessings=[
   {type:'dua', english:'“O Allah, make my heart firm in faith.”'},
 ];
 
-// Modal & Leaves
+// Modal
 const container=document.querySelector('.container');
 const modal=document.getElementById('modal');
 const modalText=document.getElementById('modal-text');
@@ -238,15 +243,14 @@ function showBlessing(blessing){
   setTimeout(()=>modalContent.classList.add('show'),50);
 }
 
-// Smooth continuous falling leaves
+// Smooth falling leaves
 function createLeaf(){
   const leaf=document.createElement('img');
   leaf.src='leaf.png';
   leaf.classList.add('leaf');
   leaf.style.width=(Math.random()*20+20)+'px';
   leaf.style.left=Math.random()*420+'px';
-
-  const duration=Math.random()*4+4; // 4-8s fall
+  const duration=Math.random()*4+4;
   leaf.style.animation = `fall ${duration}s linear forwards`;
 
   leaf.addEventListener('click',()=>{
