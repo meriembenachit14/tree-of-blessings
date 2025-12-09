@@ -3,301 +3,253 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tree of Blessings 🌿</title>
+<title>RIZZA'S TREE OF BLESSINGS 🌿</title>
 <style>
-  body {
-    margin: 0;
-    height: 100vh;
-    background: #e9f5ff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    animation: fadeIn 2s ease-in-out;
-  }
+body {
+  margin:0;
+  height:100vh;
+  background:#e9f5ff;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  font-family:Arial, sans-serif;
+  animation: fadeIn 2s ease-in-out;
+}
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 
-  @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+h1 {
+  position:absolute;
+  top:20px;
+  color:#2a7f62;
+  font-size:28px;
+  text-align:center;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  z-index:10;
+}
 
-  .container {
-    position: relative;
-    width: 450px;
-    height: 600px;
-  }
+.container {
+  position: relative;
+  width: 450px;
+  height: 600px;
+}
 
-  .tree {
-    width: 100%;
-    height: auto;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    filter: drop-shadow(0 0 12px rgba(0,255,120,0.6));
-    animation: treeGlow 3s infinite alternate;
-    z-index: 5;
-  }
+.tree {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 12px rgba(0,255,120,0.6));
+  animation: treeGlow 3s infinite alternate;
+  z-index:5;
+}
 
-  @keyframes treeGlow {
-    from { filter: drop-shadow(0 0 5px rgba(0,255,120,0.4)); }
-    to { filter: drop-shadow(0 0 15px rgba(0,255,120,0.8)); }
-  }
+@keyframes treeGlow {
+  0% { filter: drop-shadow(0 0 5px rgba(0,255,120,0.4)); }
+  50% { filter: drop-shadow(0 0 18px rgba(0,255,120,0.7)); }
+  100% { filter: drop-shadow(0 0 12px rgba(0,255,120,0.6)); }
+}
 
-  .leaf {
-    position: absolute;
-    width: 30px;
-    height: auto;
-    opacity: 0.85;
-    animation: fall linear infinite;
-    cursor: pointer;
-    z-index: 2;
-  }
+.leaf {
+  position: absolute;
+  width: 30px;
+  height: auto;
+  opacity: 0.85;
+  animation: fall linear infinite;
+  cursor: pointer;
+  z-index:2;
+}
 
-  @keyframes fall {
-    0% { transform: translateY(-150px) rotate(0deg); opacity:1; }
-    100% { transform: translateY(620px) rotate(360deg); opacity:0; }
-  }
+@keyframes fall {
+  0% { transform: translateY(-150px) rotate(0deg); opacity:1; }
+  50% { transform: translateY(250px) rotate(180deg) translateX(20px); }
+  100% { transform: translateY(620px) rotate(360deg) translateX(-10px); opacity:0; }
+}
 
-  /* MODAL */
-  .modal-bg {
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: rgba(0,0,0,0.6);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index: 100;
-  }
+/* MODAL */
+.modal-bg {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:100;
+}
 
-  .modal-content {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 350px;
-    max-height: 400px;
-    overflow-y: auto;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    white-space: pre-line;
-  }
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 350px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  white-space: pre-line;
+  opacity:0;
+  transform: scale(0.9);
+  transition: all 0.4s ease;
+}
 
-  .close-btn {
-    float: right;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: -10px;
-    margin-right: -10px;
-  }
+.modal-content.show {
+  opacity:1;
+  transform: scale(1);
+}
+
+.close-btn {
+  float: right;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: -10px;
+  margin-right: -10px;
+}
+
+.arabic {
+  font-family: 'Scheherazade', serif;
+  font-size: 18px;
+  color:#2a7f62;
+  margin-bottom:5px;
+  text-align:right;
+  background: #e0f7f1;
+  padding:2px 4px;
+  border-radius:4px;
+}
+
+.translit {
+  font-style: italic;
+  color:#555;
+  margin-bottom:5px;
+}
+
+.english {
+  color:#333;
+  margin-bottom:10px;
+}
+
+/* Scrollbar styling */
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+  background: #2a7f62;
+  border-radius: 3px;
+}
+.modal-content::-webkit-scrollbar-track {
+  background: #e9f5ff;
+  border-radius: 3px;
+}
 </style>
 </head>
 <body>
-
+<h1>RIZZA'S TREE OF BLESSINGS</h1>
 <div class="container">
   <img src="tree.png" class="tree" />
 </div>
 
 <div class="modal-bg" id="modal">
-  <div class="modal-content">
+  <div class="modal-content" id="modal-content">
     <span class="close-btn" id="close">&times;</span>
-    <div id="modal-text">Text here</div>
+    <div id="modal-text"></div>
   </div>
 </div>
 
 <script>
+// FULL blessings (Surahs, Hadith, Duas)
 const blessings = [
-`Surah Al-Qari’ah (101)
-The Striking Calamity –
-What is the Striking Calamity?
-And what can make you know what is the Striking Calamity?
-The Day when people will be like scattered moths,
-And the mountains will be like wool fluffed up.
-Then as for one whose scales are heavy with good deeds,
-He will be in a pleasant life.
-But as for one whose scales are light,
-His refuge will be an abyss.`,
+  // Surahs (14 short ones)
+  {type:'surah', arabic:'القارعة', translit:'Al-Qari’ah', english:`The Striking Calamity –\nWhat is the Striking Calamity?\nAnd what can make you know what is the Striking Calamity?\nThe Day when people will be like scattered moths,\nAnd the mountains will be like wool fluffed up.\nThen as for one whose scales are heavy with good deeds,\nHe will be in a pleasant life.\nBut as for one whose scales are light,\nHis refuge will be an abyss.`},
+  {type:'surah', arabic:'التكاثر', translit:'At-Takathur', english:`Competition in worldly increase diverts you.\nUntil you visit the graves.\nNo! You will surely know.\nThen no! You will surely know.\nNo! If you only knew with certainty…\nYou will surely see the Hellfire.\nThen you will surely see it with the eye of certainty.`},
+  {type:'surah', arabic:'العصر', translit:'Al-Asr', english:`By time,\nIndeed mankind is in loss,\nExcept for those who believe, do righteous deeds, and encourage truth and patience.`},
+  {type:'surah', arabic:'الهمزة', translit:'Al-Humazah', english:`Woe to every backbiter and slanderer\nWho gathers wealth and counts it.\nHe thinks his wealth will make him immortal.\nNo! He will be thrown into the Crusher.\nAnd what is the Crusher?\nIt is the Fire of Allah, eternally fueled,\nWhich rises over the hearts.\nIndeed it will be closed in on them, in extended columns.`},
+  {type:'surah', arabic:'الفيل', translit:'Al-Fil', english:`Have you not considered how your Lord dealt with the companions of the elephant?\nDid He not make their plan into misguidance?\nAnd He sent against them birds in flocks,\nStriking them with stones of hard clay,\nAnd made them like eaten straw.`},
+  {type:'surah', arabic:'قريش', translit:'Quraysh', english:`For the accustomed security of Quraysh,\nTheir security in winter and summer journeys,\nLet them worship the Lord of this House,\nWho fed them from hunger and secured them from fear.`},
+  {type:'surah', arabic:'الماعون', translit:'Al-Ma’un', english:`Have you seen the one who denies the Recompense?\nThat is the one who drives away the orphan,\nAnd does not encourage feeding the poor.\nSo woe to those who pray, but are heedless of their prayer,\nThose who show off, and withhold small kindnesses.`},
+  {type:'surah', arabic:'الكوثر', translit:'Al-Kawthar', english:`Indeed We have given you abundant goodness.\nSo pray to your Lord and sacrifice.\nIndeed your enemy is the one cut off.`},
+  {type:'surah', arabic:'الكافرون', translit:'Al-Kafirun', english:`Say: O disbelievers,\nI do not worship what you worship,\nNor are you worshippers of what I worship.\nNor will I worship what you worship,\nNor will you worship what I worship.\nTo you be your religion, and to me mine.`},
+  {type:'surah', arabic:'النصر', translit:'An-Nasr', english:`When the victory of Allah has come and the conquest,\nAnd you see the people enter Allah’s religion in multitudes,\nThen glorify your Lord with praise and seek His forgiveness.\nIndeed, He is ever accepting of repentance.`},
+  {type:'surah', arabic:'المسد', translit:'Al-Lahab', english:`May the hands of Abu Lahab be ruined, and ruined is he.\nHis wealth will not help him.\nHe will burn in a blazing fire,\nAnd his wife, the firewood carrier.\nAround her neck is a rope of fiber.`},
+  {type:'surah', arabic:'الإخلاص', translit:'Al-Ikhlas', english:`Say: He is Allah, One.\nAllah, the Eternal Refuge.\nHe neither begets nor is born.\nNor is there anything comparable to Him.`},
+  {type:'surah', arabic:'الفلق', translit:'Al-Falaq', english:`Say: I seek refuge in the Lord of daybreak,\nFrom the evil of what He created,\nFrom the evil of darkness when it settles,\nFrom the evil of blowers in knots,\nAnd from the evil of an envier when he envies.`},
+  {type:'surah', arabic:'الناس', translit:'An-Nas', english:`Say: I seek refuge in the Lord of mankind,\nThe Sovereign of mankind,\nThe God of mankind,\nFrom the evil of the whisperer who withdraws,\nWho whispers in the hearts of mankind,\nOf jinn and mankind.`},
 
-`Surah At-Takathur (102)
-Competition in worldly increase diverts you.
-Until you visit the graves.
-No! You will surely know.
-Then no! You will surely know.
-No! If you only knew with certainty…
-You will surely see the Hellfire.
-Then you will surely see it with the eye of certainty.`,
+  // 20 Hadith (English)
+  {type:'hadith', english:'The Prophet ﷺ said: “Actions are judged by intentions.” (Bukhari & Muslim)'},
+  {type:'hadith', english:'“Whoever believes in Allah and the Last Day, let him speak good or remain silent.” (Bukhari)'},
+  {type:'hadith', english:'“A good word is charity.” (Bukhari)'},
+  {type:'hadith', english:'“The strong person is the one who controls himself when angry.” (Bukhari)'},
+  {type:'hadith', english:'“Smiling at your brother is charity.” (Tirmidhi)'},
+  {type:'hadith', english:'“Allah is gentle and loves gentleness.” (Muslim)'},
+  {type:'hadith', english:'“Make things easy, not difficult. Spread peace.” (Bukhari)'},
+  {type:'hadith', english:'“Whoever does not thank people has not thanked Allah.” (Tirmidhi)'},
+  {type:'hadith', english:'“The best among you are those best to their families.” (Tirmidhi)'},
+  {type:'hadith', english:'“None of you truly believes until he loves for his brother what he loves for himself.” (Bukhari)'},
+  {type:'hadith', english:'“The best charity is feeding the poor.” (Bukhari & Muslim)'},
+  {type:'hadith', english:'“The most beloved deeds to Allah are the most consistent, even if small.” (Bukhari & Muslim)'},
+  {type:'hadith', english:'“The Prophet ﷺ said: Keep your heart soft.” (Bukhari)'},
+  {type:'hadith', english:'“A believer does not hate.” (Muslim)'},
+  {type:'hadith', english:'“Do not envy one another.” (Bukhari)'},
+  {type:'hadith', english:'“Be gentle with others.” (Tirmidhi)'},
+  {type:'hadith', english:'“Avoid excessive anger, control yourself.” (Bukhari)'},
+  {type:'hadith', english:'“The best among people is the one who benefits others.” (Muslim)'},
+  {type:'hadith', english:'“Do not harm your neighbors.” (Bukhari)'},
+  {type:'hadith', english:'“Speak the truth even if it is bitter.” (Tirmidhi)'},
+  {type:'hadith', english:'“Pray for others as you wish for yourself.” (Muslim)'},
 
-`Surah Al-Asr (103)
-By time,
-Indeed mankind is in loss,
-Except for those who believe, do righteous deeds, and encourage truth and patience.`,
-
-`Surah Al-Humazah (104)
-Woe to every backbiter and slanderer
-Who gathers wealth and counts it.
-He thinks his wealth will make him immortal.
-No! He will be thrown into the Crusher.
-And what is the Crusher?
-It is the Fire of Allah, eternally fueled,
-Which rises over the hearts.
-Indeed it will be closed in on them,
-In extended columns.`,
-
-`Surah Al-Fil (105)
-Have you not considered how your Lord dealt with the companions of the elephant?
-Did He not make their plan into misguidance?
-And He sent against them birds in flocks,
-Striking them with stones of hard clay,
-And made them like eaten straw.`,
-
-`Surah Quraysh (106)
-For the accustomed security of Quraysh,
-Their security in winter and summer journeys,
-Let them worship the Lord of this House,
-Who fed them from hunger and secured them from fear.`,
-
-`Surah Al-Ma’un (107)
-Have you seen the one who denies the Recompense?
-That is the one who drives away the orphan,
-And does not encourage feeding the poor.
-So woe to those who pray,
-But are heedless of their prayer,
-Those who show off,
-And withhold small kindnesses.`,
-
-`Surah Al-Kawthar (108)
-Indeed We have given you abundant goodness.
-So pray to your Lord and sacrifice.
-Indeed your enemy is the one cut off.`,
-
-`Surah Al-Kafirun (109)
-Say: O disbelievers,
-I do not worship what you worship,
-Nor are you worshippers of what I worship.
-Nor will I worship what you worship,
-Nor will you worship what I worship.
-To you be your religion, and to me mine.`,
-
-`Surah An-Nasr (110)
-When the victory of Allah has come and the conquest,
-And you see the people enter Allah’s religion in multitudes,
-Then glorify your Lord with praise and seek His forgiveness.
-Indeed, He is ever accepting of repentance.`,
-
-`Surah Al-Lahab (111)
-May the hands of Abu Lahab be ruined, and ruined is he.
-His wealth will not help him.
-He will burn in a blazing fire,
-And his wife, the firewood carrier.
-Around her neck is a rope of fiber.`,
-
-`Surah Al-Ikhlas (112)
-Say: He is Allah, One.
-Allah, the Eternal Refuge.
-He neither begets nor is born.
-Nor is there anything comparable to Him.`,
-
-`Surah Al-Falaq (113)
-Say: I seek refuge in the Lord of daybreak,
-From the evil of what He created,
-From the evil of darkness when it settles,
-From the evil of blowers in knots,
-And from the evil of an envier when he envies.`,
-
-`Surah An-Nas (114)
-Say: I seek refuge in the Lord of mankind,
-The Sovereign of mankind,
-The God of mankind,
-From the evil of the whisperer who withdraws,
-Who whispers in the hearts of mankind,
-Of jinn and mankind.`,
-
-`Hadith 1
-The Prophet ﷺ said: “Actions are judged by intentions.” (Bukhari & Muslim)`,
-
-`Hadith 2
-“Whoever believes in Allah and the Last Day, let him speak good or remain silent.” (Bukhari)`,
-
-`Hadith 3
-“A good word is charity.” (Bukhari)`,
-
-`Hadith 4
-“The strong person is the one who controls himself when angry.” (Bukhari)`,
-
-`Hadith 5
-“Smiling at your brother is charity.” (Tirmidhi)`,
-
-`Hadith 6
-“Allah is gentle and loves gentleness.” (Muslim)`,
-
-`Hadith 7
-“Make things easy, not difficult. Spread peace.” (Bukhari)`,
-
-`Hadith 8
-“Whoever does not thank people has not thanked Allah.” (Tirmidhi)`,
-
-`Hadith 9
-“The best among you are those best to their families.” (Tirmidhi)`,
-
-`Hadith 10
-“None of you truly believes until he loves for his brother what he loves for himself.” (Bukhari)`,
-
-`Dua 1
-May Allah bless you with light, mercy, and peace.`,
-
-`Dua 2
-May Allah grant you protection from harm and guide your heart.`,
-
-`Dua 3
-May your home be filled with tranquility and barakah.`,
-
-`Dua 4
-May Allah remove your worries and replace them with ease.`,
-
-`Dua 5
-May Allah accept your prayers and forgive your sins.`,
-
-`Dua 6
-May Allah soften your heart and strengthen your faith.`,
-
-`Dua 7
-May Allah grant you happiness in this life and the next.`
+  // 7 Duas
+  {type:'dua', english:'May Allah bless you with light, mercy, and peace.'},
+  {type:'dua', english:'May Allah grant you protection from harm and guide your heart.'},
+  {type:'dua', english:'May your home be filled with tranquility and barakah.'},
+  {type:'dua', english:'May Allah remove your worries and replace them with ease.'},
+  {type:'dua', english:'May Allah accept your prayers and forgive your sins.'},
+  {type:'dua', english:'May Allah soften your heart and strengthen your faith.'},
+  {type:'dua', english:'May Allah grant you happiness in this life and the next.'}
 ];
 
-const container = document.querySelector('.container');
-const modal = document.getElementById('modal');
-const modalText = document.getElementById('modal-text');
-const closeBtn = document.getElementById('close');
+// LEAVES & MODAL
+const container=document.querySelector('.container');
+const modal=document.getElementById('modal');
+const modalText=document.getElementById('modal-text');
+const modalContent=document.getElementById('modal-content');
+const closeBtn=document.getElementById('close');
 
-function showBlessing() {
-  const index = Math.floor(Math.random() * blessings.length);
-  modalText.textContent = blessings[index];
-  modal.style.display = 'flex';
+function showBlessing(blessing){
+  modalText.innerHTML='';
+  if(blessing.type==='surah'){
+    const a=document.createElement('div'); a.className='arabic'; a.textContent=blessing.arabic;
+    const t=document.createElement('div'); t.className='translit'; t.textContent=blessing.translit;
+    const e=document.createElement('div'); e.className='english'; e.textContent=blessing.english;
+    modalText.appendChild(a); modalText.appendChild(t); modalText.appendChild(e);
+  } else { const e=document.createElement('div'); e.className='english'; e.textContent=blessing.english; modalText.appendChild(e);}
+  modal.style.display='flex';
+  setTimeout(()=>modalContent.classList.add('show'),50);
 }
 
-// Click leaves to show blessings
-function createLeaf() {
-  const leaf = document.createElement('img');
-  leaf.src = 'leaf.png';
+function createLeaf(){
+  const leaf=document.createElement('img');
+  leaf.src='leaf.png';
   leaf.classList.add('leaf');
-
-  const size = Math.random() * 20 + 20;
-  leaf.style.width = size + 'px';
-  leaf.style.left = Math.random() * 420 + 'px';
-  const duration = Math.random() * 3 + 4;
-  leaf.style.animationDuration = duration + 's';
-
-  leaf.addEventListener('click', showBlessing);
-
+  leaf.style.width=(Math.random()*20+20)+'px';
+  leaf.style.left=Math.random()*420+'px';
+  leaf.style.animationDuration=(Math.random()*3+4)+'s';
+  leaf.style.animationDelay=(Math.random()*3)+'s';
+  leaf.addEventListener('click',()=>{
+    showBlessing(blessings[Math.floor(Math.random()*blessings.length)]);
+    leaf.style.transition='all 0.5s';
+    leaf.style.transform='scale(0)';
+    leaf.style.opacity='0';
+  });
   container.appendChild(leaf);
-  setTimeout(() => leaf.remove(), duration * 1000);
+  setTimeout(()=>leaf.remove(),7000);
 }
+setInterval(createLeaf,500);
 
-// Create many leaves continuously
-setInterval(createLeaf, 500);
-
-// Close modal
-closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
-modal.addEventListener('click', (e) => { if(e.target===modal) modal.style.display='none'; });
-
+closeBtn.addEventListener('click',()=>{modalContent.classList.remove('show'); modal.style.display='none';});
+modal.addEventListener('click',(e)=>{ if(e.target===modal){ modalContent.classList.remove('show'); modal.style.display='none'; }});
 </script>
 </body>
 </html>
