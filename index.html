@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RIZZA'S TREE OF BLESSINGS 🌿</title>
+<title>RIZZA'S TREE OF BLESSINGS 🌿✨</title>
 <style>
 body {
   margin:0;
@@ -43,7 +43,7 @@ h1 {
   left: 50%;
   transform: translateX(-50%);
   filter: drop-shadow(0 0 12px rgba(0,255,120,0.6));
-  animation: treeGlow 3s infinite alternate;
+  animation: treeGlow 3s infinite alternate, sway 6s ease-in-out infinite;
   z-index:5;
 }
 
@@ -51,6 +51,12 @@ h1 {
   0% { filter: drop-shadow(0 0 5px rgba(0,255,120,0.4)); }
   50% { filter: drop-shadow(0 0 18px rgba(0,255,120,0.7)); }
   100% { filter: drop-shadow(0 0 12px rgba(0,255,120,0.6)); }
+}
+
+@keyframes sway {
+  0% { transform: translateX(-50%) rotate(-1deg); }
+  50% { transform: translateX(-50%) rotate(1deg); }
+  100% { transform: translateX(-50%) rotate(-1deg); }
 }
 
 .leaf {
@@ -67,6 +73,23 @@ h1 {
   0% { transform: translateY(-150px) rotate(0deg); opacity:1; }
   50% { transform: translateY(250px) rotate(180deg) translateX(20px); }
   100% { transform: translateY(620px) rotate(360deg) translateX(-10px); opacity:0; }
+}
+
+/* SPARKLES */
+.sparkle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  animation: sparkleUp linear infinite;
+  z-index:3;
+}
+
+@keyframes sparkleUp {
+  0% { transform: translateY(0) scale(0.5); opacity:0; }
+  10% { opacity:1; }
+  50% { transform: translateY(-200px) scale(1); opacity:0.7; }
+  100% { transform: translateY(-250px) scale(0.2); opacity:0; }
 }
 
 /* MODAL */
@@ -159,55 +182,55 @@ h1 {
 </div>
 
 <script>
-// FULL blessings (Surahs, Hadith, Duas)
+// FULL blessings array
 const blessings = [
-  // Surahs (14 short ones)
-  {type:'surah', arabic:'القارعة', translit:'Al-Qari’ah', english:`The Striking Calamity –\nWhat is the Striking Calamity?\nAnd what can make you know what is the Striking Calamity?\nThe Day when people will be like scattered moths,\nAnd the mountains will be like wool fluffed up.\nThen as for one whose scales are heavy with good deeds,\nHe will be in a pleasant life.\nBut as for one whose scales are light,\nHis refuge will be an abyss.`},
-  {type:'surah', arabic:'التكاثر', translit:'At-Takathur', english:`Competition in worldly increase diverts you.\nUntil you visit the graves.\nNo! You will surely know.\nThen no! You will surely know.\nNo! If you only knew with certainty…\nYou will surely see the Hellfire.\nThen you will surely see it with the eye of certainty.`},
-  {type:'surah', arabic:'العصر', translit:'Al-Asr', english:`By time,\nIndeed mankind is in loss,\nExcept for those who believe, do righteous deeds, and encourage truth and patience.`},
-  {type:'surah', arabic:'الهمزة', translit:'Al-Humazah', english:`Woe to every backbiter and slanderer\nWho gathers wealth and counts it.\nHe thinks his wealth will make him immortal.\nNo! He will be thrown into the Crusher.\nAnd what is the Crusher?\nIt is the Fire of Allah, eternally fueled,\nWhich rises over the hearts.\nIndeed it will be closed in on them, in extended columns.`},
-  {type:'surah', arabic:'الفيل', translit:'Al-Fil', english:`Have you not considered how your Lord dealt with the companions of the elephant?\nDid He not make their plan into misguidance?\nAnd He sent against them birds in flocks,\nStriking them with stones of hard clay,\nAnd made them like eaten straw.`},
-  {type:'surah', arabic:'قريش', translit:'Quraysh', english:`For the accustomed security of Quraysh,\nTheir security in winter and summer journeys,\nLet them worship the Lord of this House,\nWho fed them from hunger and secured them from fear.`},
-  {type:'surah', arabic:'الماعون', translit:'Al-Ma’un', english:`Have you seen the one who denies the Recompense?\nThat is the one who drives away the orphan,\nAnd does not encourage feeding the poor.\nSo woe to those who pray, but are heedless of their prayer,\nThose who show off, and withhold small kindnesses.`},
-  {type:'surah', arabic:'الكوثر', translit:'Al-Kawthar', english:`Indeed We have given you abundant goodness.\nSo pray to your Lord and sacrifice.\nIndeed your enemy is the one cut off.`},
-  {type:'surah', arabic:'الكافرون', translit:'Al-Kafirun', english:`Say: O disbelievers,\nI do not worship what you worship,\nNor are you worshippers of what I worship.\nNor will I worship what you worship,\nNor will you worship what I worship.\nTo you be your religion, and to me mine.`},
-  {type:'surah', arabic:'النصر', translit:'An-Nasr', english:`When the victory of Allah has come and the conquest,\nAnd you see the people enter Allah’s religion in multitudes,\nThen glorify your Lord with praise and seek His forgiveness.\nIndeed, He is ever accepting of repentance.`},
-  {type:'surah', arabic:'المسد', translit:'Al-Lahab', english:`May the hands of Abu Lahab be ruined, and ruined is he.\nHis wealth will not help him.\nHe will burn in a blazing fire,\nAnd his wife, the firewood carrier.\nAround her neck is a rope of fiber.`},
-  {type:'surah', arabic:'الإخلاص', translit:'Al-Ikhlas', english:`Say: He is Allah, One.\nAllah, the Eternal Refuge.\nHe neither begets nor is born.\nNor is there anything comparable to Him.`},
-  {type:'surah', arabic:'الفلق', translit:'Al-Falaq', english:`Say: I seek refuge in the Lord of daybreak,\nFrom the evil of what He created,\nFrom the evil of darkness when it settles,\nFrom the evil of blowers in knots,\nAnd from the evil of an envier when he envies.`},
-  {type:'surah', arabic:'الناس', translit:'An-Nas', english:`Say: I seek refuge in the Lord of mankind,\nThe Sovereign of mankind,\nThe God of mankind,\nFrom the evil of the whisperer who withdraws,\nWho whispers in the hearts of mankind,\nOf jinn and mankind.`},
-
-  // 20 Hadith (English)
-  {type:'hadith', english:'The Prophet ﷺ said: “Actions are judged by intentions.” (Bukhari & Muslim)'},
-  {type:'hadith', english:'“Whoever believes in Allah and the Last Day, let him speak good or remain silent.” (Bukhari)'},
-  {type:'hadith', english:'“A good word is charity.” (Bukhari)'},
-  {type:'hadith', english:'“The strong person is the one who controls himself when angry.” (Bukhari)'},
-  {type:'hadith', english:'“Smiling at your brother is charity.” (Tirmidhi)'},
-  {type:'hadith', english:'“Allah is gentle and loves gentleness.” (Muslim)'},
-  {type:'hadith', english:'“Make things easy, not difficult. Spread peace.” (Bukhari)'},
-  {type:'hadith', english:'“Whoever does not thank people has not thanked Allah.” (Tirmidhi)'},
-  {type:'hadith', english:'“The best among you are those best to their families.” (Tirmidhi)'},
-  {type:'hadith', english:'“None of you truly believes until he loves for his brother what he loves for himself.” (Bukhari)'},
-  {type:'hadith', english:'“The best charity is feeding the poor.” (Bukhari & Muslim)'},
-  {type:'hadith', english:'“The most beloved deeds to Allah are the most consistent, even if small.” (Bukhari & Muslim)'},
-  {type:'hadith', english:'“The Prophet ﷺ said: Keep your heart soft.” (Bukhari)'},
-  {type:'hadith', english:'“A believer does not hate.” (Muslim)'},
-  {type:'hadith', english:'“Do not envy one another.” (Bukhari)'},
-  {type:'hadith', english:'“Be gentle with others.” (Tirmidhi)'},
-  {type:'hadith', english:'“Avoid excessive anger, control yourself.” (Bukhari)'},
-  {type:'hadith', english:'“The best among people is the one who benefits others.” (Muslim)'},
-  {type:'hadith', english:'“Do not harm your neighbors.” (Bukhari)'},
-  {type:'hadith', english:'“Speak the truth even if it is bitter.” (Tirmidhi)'},
-  {type:'hadith', english:'“Pray for others as you wish for yourself.” (Muslim)'},
-
-  // 7 Duas
-  {type:'dua', english:'May Allah bless you with light, mercy, and peace.'},
-  {type:'dua', english:'May Allah grant you protection from harm and guide your heart.'},
-  {type:'dua', english:'May your home be filled with tranquility and barakah.'},
-  {type:'dua', english:'May Allah remove your worries and replace them with ease.'},
-  {type:'dua', english:'May Allah accept your prayers and forgive your sins.'},
-  {type:'dua', english:'May Allah soften your heart and strengthen your faith.'},
-  {type:'dua', english:'May Allah grant you happiness in this life and the next.'}
+  // EXAMPLES:
+  // Surah Al-Qari’ah
+  {type:'surah', arabic:'الْقَارِعَةُ', translit:'Al-Qari’ah (101)', english:'The Striking Calamity…'},
+  {type:'surah', arabic:'التَّكَاثُر', translit:'At-Takathur (102)', english:'Competition in worldly increase…'},
+  {type:'surah', arabic:'العصر', translit:'Al-Asr (103)', english:'By time, indeed mankind is in loss…'},
+  {type:'surah', arabic:'الهمزة', translit:'Al-Humazah (104)', english:'Woe to every scorner…'},
+  {type:'surah', arabic:'الفيل', translit:'Al-Fil (105)', english:'Have you not considered…'},
+  {type:'surah', arabic:'قريش', translit:'Quraysh (106)', english:'For the accustomed security of Quraysh…'},
+  {type:'surah', arabic:'الماعون', translit:'Al-Ma’un (107)', english:'Have you seen the one who denies…'},
+  {type:'surah', arabic:'الكوثر', translit:'Al-Kawthar (108)', english:'Indeed, We have granted you…'},
+  {type:'surah', arabic:'الكافرون', translit:'Al-Kafirun (109)', english:'Say, “O disbelievers…'},
+  {type:'surah', arabic:'النصر', translit:'An-Nasr (110)', english:'When the victory of Allah has come…'},
+  {type:'surah', arabic:'المسد', translit:'Al-Lahab (111)', english:'May the hands of Abu Lahab be ruined…'},
+  {type:'surah', arabic:'الإخلاص', translit:'Al-Ikhlas (112)', english:'Say, “He is Allah, One…'},
+  {type:'surah', arabic:'الفلق', translit:'Al-Falaq (113)', english:'Say, “I seek refuge in the Lord…'},
+  {type:'surah', arabic:'الناس', translit:'An-Nas (114)', english:'Say, “I seek refuge in the Lord of mankind…'},
+  
+  // 20 Hadith examples
+  {type:'hadith', english:'“Actions are judged by intentions.” – Prophet Muhammad ﷺ'},
+  {type:'hadith', english:'“The best among you are those who learn Qur’an and teach it.” – Prophet ﷺ'},
+  {type:'hadith', english:'“Seek knowledge from cradle to grave.” – Prophet ﷺ'},
+  {type:'hadith', english:'“The strong believer is better than the weak believer.” – Prophet ﷺ'},
+  {type:'hadith', english:'“None of you truly believes until he loves for his brother what he loves for himself.” – Prophet ﷺ'},
+  {type:'hadith', english:'“Make things easy and do not make them difficult.” – Prophet ﷺ'},
+  {type:'hadith', english:'“The best charity is that given in Ramadan.” – Prophet ﷺ'},
+  {type:'hadith', english:'“Paradise lies at the feet of mothers.” – Prophet ﷺ'},
+  {type:'hadith', english:'“Feed the hungry, visit the sick.” – Prophet ﷺ'},
+  {type:'hadith', english:'“Shall I not inform you of the best of deeds?” – Prophet ﷺ'},
+  {type:'hadith', english:'“He who does not show mercy will not be shown mercy.” – Prophet ﷺ'},
+  {type:'hadith', english:'“Whoever treads a path seeking knowledge, Allah will make easy a path to Paradise.” – Prophet ﷺ'},
+  {type:'hadith', english:'“Cleanliness is half of faith.” – Prophet ﷺ'},
+  {type:'hadith', english:'“The best among you are those with the best character.” – Prophet ﷺ'},
+  {type:'hadith', english:'“Do not harm your neighbor.” – Prophet ﷺ'},
+  {type:'hadith', english:'“The most beloved actions to Allah are the most consistent ones.” – Prophet ﷺ'},
+  {type:'hadith', english:'“Do not envy one another.” – Prophet ﷺ'},
+  {type:'hadith', english:'“The best of people are those who are most beneficial to people.” – Prophet ﷺ'},
+  {type:'hadith', english:'“A true believer does not taunt, curse, or abuse others.” – Prophet ﷺ'},
+  {type:'hadith', english:'“The best form of worship is prayer at its proper time.” – Prophet ﷺ'},
+  
+  // 7 Duas examples
+  {type:'dua', english:'“O Allah, guide me to the straight path.”'},
+  {type:'dua', english:'“O Allah, grant me knowledge that benefits me.”'},
+  {type:'dua', english:'“O Allah, forgive my sins and accept my deeds.”'},
+  {type:'dua', english:'“O Allah, bless my family and friends.”'},
+  {type:'dua', english:'“O Allah, protect me from harm and evil.”'},
+  {type:'dua', english:'“O Allah, give me patience and strength.”'},
+  {type:'dua', english:'“O Allah, make my heart firm in faith.”'},
 ];
 
 // LEAVES & MODAL
@@ -247,6 +270,23 @@ function createLeaf(){
   setTimeout(()=>leaf.remove(),7000);
 }
 setInterval(createLeaf,500);
+
+// COLORED SPARKLES
+function createSparkle(){
+  const s=document.createElement('div');
+  s.className='sparkle';
+  s.style.left=Math.random()*440+'px';
+  s.style.bottom='20px';
+  const size=Math.random()*4+3;
+  s.style.width=size+'px';
+  s.style.height=size+'px';
+  const colors=['rgba(144,238,144,0.9)','rgba(173,216,230,0.9)','rgba(255,255,224,0.9)'];
+  s.style.background=colors[Math.floor(Math.random()*colors.length)];
+  s.style.animationDuration=(Math.random()*2+2)+'s';
+  container.appendChild(s);
+  setTimeout(()=>s.remove(),4000);
+}
+setInterval(createSparkle,300);
 
 closeBtn.addEventListener('click',()=>{modalContent.classList.remove('show'); modal.style.display='none';});
 modal.addEventListener('click',(e)=>{ if(e.target===modal){ modalContent.classList.remove('show'); modal.style.display='none'; }});
