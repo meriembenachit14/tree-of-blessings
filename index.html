@@ -29,6 +29,24 @@ h1 {
   z-index:10;
 }
 
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  top:70px;
+  font-size:16px;
+  color:#2a7f62;
+  background: rgba(255,255,255,0.9);
+  padding:6px 12px;
+  border-radius:8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  animation: bounce 2s infinite;
+  z-index:20;
+}
+@keyframes bounce {
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+
 .container {
   position: relative;
   width: 450px;
@@ -64,15 +82,13 @@ h1 {
   width: 30px;
   height: auto;
   opacity: 0.85;
-  animation: fall linear infinite;
   cursor: pointer;
   z-index:2;
+  transition: transform 0.3s, filter 0.3s;
 }
-
-@keyframes fall {
-  0% { transform: translateY(-150px) rotate(0deg); opacity:1; }
-  50% { transform: translateY(250px) rotate(180deg) translateX(20px); }
-  100% { transform: translateY(620px) rotate(360deg) translateX(-10px); opacity:0; }
+.leaf:hover {
+  transform: scale(1.3) rotate(10deg);
+  filter: drop-shadow(0 0 8px rgba(0,255,120,0.8));
 }
 
 /* SPARKLES */
@@ -84,7 +100,6 @@ h1 {
   animation: sparkleUp linear infinite;
   z-index:3;
 }
-
 @keyframes sparkleUp {
   0% { transform: translateY(0) scale(0.5); opacity:0; }
   10% { opacity:1; }
@@ -103,7 +118,6 @@ h1 {
   align-items:center;
   z-index:100;
 }
-
 .modal-content {
   background: #fff;
   border-radius: 12px;
@@ -117,12 +131,10 @@ h1 {
   transform: scale(0.9);
   transition: all 0.4s ease;
 }
-
 .modal-content.show {
   opacity:1;
   transform: scale(1);
 }
-
 .close-btn {
   float: right;
   cursor: pointer;
@@ -131,45 +143,17 @@ h1 {
   margin-top: -10px;
   margin-right: -10px;
 }
-
-.arabic {
-  font-family: 'Scheherazade', serif;
-  font-size: 18px;
-  color:#2a7f62;
-  margin-bottom:5px;
-  text-align:right;
-  background: #e0f7f1;
-  padding:2px 4px;
-  border-radius:4px;
-}
-
-.translit {
-  font-style: italic;
-  color:#555;
-  margin-bottom:5px;
-}
-
-.english {
-  color:#333;
-  margin-bottom:10px;
-}
-
-/* Scrollbar styling */
-.modal-content::-webkit-scrollbar {
-  width: 6px;
-}
-.modal-content::-webkit-scrollbar-thumb {
-  background: #2a7f62;
-  border-radius: 3px;
-}
-.modal-content::-webkit-scrollbar-track {
-  background: #e9f5ff;
-  border-radius: 3px;
-}
+.arabic { font-family: 'Scheherazade', serif; font-size:18px; color:#2a7f62; margin-bottom:5px; text-align:right; background:#e0f7f1; padding:2px 4px; border-radius:4px;}
+.translit { font-style: italic; color:#555; margin-bottom:5px;}
+.english { color:#333; margin-bottom:10px;}
+.modal-content::-webkit-scrollbar { width: 6px; }
+.modal-content::-webkit-scrollbar-thumb { background: #2a7f62; border-radius: 3px; }
+.modal-content::-webkit-scrollbar-track { background: #e9f5ff; border-radius: 3px; }
 </style>
 </head>
 <body>
 <h1>RIZZA'S TREE OF BLESSINGS</h1>
+<div class="tooltip">🍃 Click the leaves to reveal blessings!</div>
 <div class="container">
   <img src="tree.png" class="tree" />
 </div>
@@ -183,11 +167,10 @@ h1 {
 
 <script>
 // FULL blessings array
-const blessings = [
-  // EXAMPLES:
-  // Surah Al-Qari’ah
-  {type:'surah', arabic:'الْقَارِعَةُ', translit:'Al-Qari’ah (101)', english:'The Striking Calamity…'},
-  {type:'surah', arabic:'التَّكَاثُر', translit:'At-Takathur (102)', english:'Competition in worldly increase…'},
+const blessings=[
+  // Short Surahs 101-114
+  {type:'surah', arabic:'القارعة', translit:'Al-Qari’ah (101)', english:'The Striking Calamity…'},
+  {type:'surah', arabic:'التكاثر', translit:'At-Takathur (102)', english:'Competition in worldly increase…'},
   {type:'surah', arabic:'العصر', translit:'Al-Asr (103)', english:'By time, indeed mankind is in loss…'},
   {type:'surah', arabic:'الهمزة', translit:'Al-Humazah (104)', english:'Woe to every scorner…'},
   {type:'surah', arabic:'الفيل', translit:'Al-Fil (105)', english:'Have you not considered…'},
@@ -200,9 +183,9 @@ const blessings = [
   {type:'surah', arabic:'الإخلاص', translit:'Al-Ikhlas (112)', english:'Say, “He is Allah, One…'},
   {type:'surah', arabic:'الفلق', translit:'Al-Falaq (113)', english:'Say, “I seek refuge in the Lord…'},
   {type:'surah', arabic:'الناس', translit:'An-Nas (114)', english:'Say, “I seek refuge in the Lord of mankind…'},
-  
-  // 20 Hadith examples
-  {type:'hadith', english:'“Actions are judged by intentions.” – Prophet Muhammad ﷺ'},
+
+  // 20 Hadiths
+  {type:'hadith', english:'“Actions are judged by intentions.” – Prophet ﷺ'},
   {type:'hadith', english:'“The best among you are those who learn Qur’an and teach it.” – Prophet ﷺ'},
   {type:'hadith', english:'“Seek knowledge from cradle to grave.” – Prophet ﷺ'},
   {type:'hadith', english:'“The strong believer is better than the weak believer.” – Prophet ﷺ'},
@@ -222,8 +205,8 @@ const blessings = [
   {type:'hadith', english:'“The best of people are those who are most beneficial to people.” – Prophet ﷺ'},
   {type:'hadith', english:'“A true believer does not taunt, curse, or abuse others.” – Prophet ﷺ'},
   {type:'hadith', english:'“The best form of worship is prayer at its proper time.” – Prophet ﷺ'},
-  
-  // 7 Duas examples
+
+  // 7 Duas
   {type:'dua', english:'“O Allah, guide me to the straight path.”'},
   {type:'dua', english:'“O Allah, grant me knowledge that benefits me.”'},
   {type:'dua', english:'“O Allah, forgive my sins and accept my deeds.”'},
@@ -233,7 +216,7 @@ const blessings = [
   {type:'dua', english:'“O Allah, make my heart firm in faith.”'},
 ];
 
-// LEAVES & MODAL
+// Modal & Leaves
 const container=document.querySelector('.container');
 const modal=document.getElementById('modal');
 const modalText=document.getElementById('modal-text');
@@ -247,31 +230,38 @@ function showBlessing(blessing){
     const t=document.createElement('div'); t.className='translit'; t.textContent=blessing.translit;
     const e=document.createElement('div'); e.className='english'; e.textContent=blessing.english;
     modalText.appendChild(a); modalText.appendChild(t); modalText.appendChild(e);
-  } else { const e=document.createElement('div'); e.className='english'; e.textContent=blessing.english; modalText.appendChild(e);}
+  } else {
+    const e=document.createElement('div'); e.className='english'; e.textContent=blessing.english;
+    modalText.appendChild(e);
+  }
   modal.style.display='flex';
   setTimeout(()=>modalContent.classList.add('show'),50);
 }
 
+// Smooth continuous falling leaves
 function createLeaf(){
   const leaf=document.createElement('img');
   leaf.src='leaf.png';
   leaf.classList.add('leaf');
   leaf.style.width=(Math.random()*20+20)+'px';
   leaf.style.left=Math.random()*420+'px';
-  leaf.style.animationDuration=(Math.random()*3+4)+'s';
-  leaf.style.animationDelay=(Math.random()*3)+'s';
+
+  const duration=Math.random()*4+4; // 4-8s fall
+  leaf.style.animation = `fall ${duration}s linear forwards`;
+
   leaf.addEventListener('click',()=>{
     showBlessing(blessings[Math.floor(Math.random()*blessings.length)]);
     leaf.style.transition='all 0.5s';
     leaf.style.transform='scale(0)';
     leaf.style.opacity='0';
   });
-  container.appendChild(leaf);
-  setTimeout(()=>leaf.remove(),7000);
-}
-setInterval(createLeaf,500);
 
-// COLORED SPARKLES
+  container.appendChild(leaf);
+  setTimeout(()=>leaf.remove(), duration*1000);
+}
+setInterval(createLeaf,400);
+
+// Sparkles
 function createSparkle(){
   const s=document.createElement('div');
   s.className='sparkle';
