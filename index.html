@@ -1,210 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tree of Blessings</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #e0f7fa;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 20px;
-      min-height: 100vh;
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tree of Blessings 🌿</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #e9f5ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    animation: fadeIn 2s ease-in-out;
+  }
 
-    h1 {
-      color: #2e7d32;
-      text-align: center;
-    }
+  @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 
-    #tree-container {
-      position: relative;
-      width: 420px;
-      height: 550px;
-      background: url('tree.png') no-repeat center bottom;
-      background-size: contain;
-    }
+  .container {
+    position: relative;
+    width: 450px;
+    height: 600px;
+  }
 
-    .leaf {
-      position: absolute;
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-      transition: transform .3s, filter .3s;
-    }
+  .tree {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 12px rgba(0,255,120,0.6));
+    animation: treeGlow 3s infinite alternate;
+    z-index: 5;
+  }
 
-    .leaf:hover {
-      transform: scale(1.25) rotate(-10deg);
-      filter: drop-shadow(0 0 8px #ffd700);
-    }
+  @keyframes treeGlow {
+    from { filter: drop-shadow(0 0 5px rgba(0,255,120,0.4)); }
+    to { filter: drop-shadow(0 0 15px rgba(0,255,120,0.8)); }
+  }
 
-    #message {
-      margin-top: 20px;
-      padding: 20px;
-      background-color: #ffffffdd;
-      border-radius: 10px;
-      width: 350px;
-      max-height: 300px;
-      overflow-y: auto;
-      opacity: 0;
-      transition: .5s;
-      white-space: pre-line;
-      font-size: 15px;
-    }
+  .leaf {
+    position: absolute;
+    width: 30px;
+    height: auto;
+    opacity: 0.85;
+    animation: fall linear infinite;
+    cursor: pointer;
+    z-index: 2;
+  }
 
-    .falling-leaf {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: url('leaf.png') no-repeat center center;
-      background-size: contain;
-      opacity: .9;
-      animation: fall linear forwards;
-    }
+  @keyframes fall {
+    0% { transform: translateY(-150px) rotate(0deg); opacity:1; }
+    100% { transform: translateY(620px) rotate(360deg); opacity:0; }
+  }
 
-    @keyframes fall {
-      0% { transform: translateY(-40px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(650px) rotate(360deg); opacity: 0; }
-    }
-  </style>
+  /* MODAL */
+  .modal-bg {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index: 100;
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 350px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    white-space: pre-line;
+  }
+
+  .close-btn {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: -10px;
+    margin-right: -10px;
+  }
+</style>
 </head>
 <body>
 
-<h1>Tree of Blessings 🌿</h1>
-
-<div id="tree-container">
-  <img src="leaf.png" class="leaf" style="top: 60px; left: 90px;">
-  <img src="leaf.png" class="leaf" style="top: 100px; left: 200px;">
-  <img src="leaf.png" class="leaf" style="top: 140px; left: 140px;">
-  <img src="leaf.png" class="leaf" style="top: 190px; left: 260px;">
-  <img src="leaf.png" class="leaf" style="top: 240px; left: 70px;">
-  <img src="leaf.png" class="leaf" style="top: 290px; left: 160px;">
-  <img src="leaf.png" class="leaf" style="top: 340px; left: 260px;">
+<div class="container">
+  <img src="tree.png" class="tree" />
 </div>
 
-<div id="message">Click a leaf to receive a blessing.</div>
+<div class="modal-bg" id="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="close">&times;</span>
+    <div id="modal-text">Text here</div>
+  </div>
+</div>
 
 <script>
 const blessings = [
+`Surah Al-Qari’ah (101)
+The Striking Calamity –
+What is the Striking Calamity?
+And what can make you know what is the Striking Calamity?
+The Day when people will be like scattered moths,
+And the mountains will be like wool fluffed up.
+Then as for one whose scales are heavy with good deeds,
+He will be in a pleasant life.
+But as for one whose scales are light,
+His refuge will be an abyss.`,
 
-/* ---------------- SURAH 101–114 ---------------- */
+`Surah At-Takathur (102)
+Competition in worldly increase diverts you.
+Until you visit the graves.
+No! You will surely know.
+Then no! You will surely know.
+No! If you only knew with certainty…
+You will surely see the Hellfire.
+Then you will surely see it with the eye of certainty.`,
 
-`Surah Al-Qari’ah (101)\n\nThe Striking Calamity –\nWhat is the Striking Calamity?\nAnd what can make you know what is the Striking Calamity?\nThe Day when people will be like scattered moths,\nAnd the mountains will be like wool fluffed up.\nThen as for one whose scales are heavy with good deeds,\nHe will be in a pleasant life.\nBut as for one whose scales are light,\nHis refuge will be an abyss.`,
+`Surah Al-Asr (103)
+By time,
+Indeed mankind is in loss,
+Except for those who believe, do righteous deeds, and encourage truth and patience.`,
 
-`Surah At-Takathur (102)\n\nCompetition in worldly increase diverts you.\nUntil you visit the graves.\nNo! You will surely know.\nThen no! You will surely know.\nNo! If you only knew with certainty…\nYou will surely see the Hellfire.\nThen you will surely see it with the eye of certainty.`,
+`Surah Al-Humazah (104)
+Woe to every backbiter and slanderer
+Who gathers wealth and counts it.
+He thinks his wealth will make him immortal.
+No! He will be thrown into the Crusher.
+And what is the Crusher?
+It is the Fire of Allah, eternally fueled,
+Which rises over the hearts.
+Indeed it will be closed in on them,
+In extended columns.`,
 
-`Surah Al-Asr (103)\n\nBy time,\nIndeed mankind is in loss,\nExcept for those who believe, do righteous deeds, and encourage truth and patience.`,
+`Surah Al-Fil (105)
+Have you not considered how your Lord dealt with the companions of the elephant?
+Did He not make their plan into misguidance?
+And He sent against them birds in flocks,
+Striking them with stones of hard clay,
+And made them like eaten straw.`,
 
-`Surah Al-Humazah (104)\n\nWoe to every backbiter and slanderer\nWho gathers wealth and counts it.\nHe thinks his wealth will make him immortal.\nNo! He will be thrown into the Crusher.\nAnd what is the Crusher?\nIt is the Fire of Allah, eternally fueled,\nWhich rises over the hearts.\nIndeed it will be closed in on them,\nIn extended columns.`,
+`Surah Quraysh (106)
+For the accustomed security of Quraysh,
+Their security in winter and summer journeys,
+Let them worship the Lord of this House,
+Who fed them from hunger and secured them from fear.`,
 
-`Surah Al-Fil (105)\n\nHave you not considered how your Lord dealt with the companions of the elephant?\nDid He not make their plan into misguidance?\nAnd He sent against them birds in flocks,\nStriking them with stones of hard clay,\nAnd made them like eaten straw.`,
+`Surah Al-Ma’un (107)
+Have you seen the one who denies the Recompense?
+That is the one who drives away the orphan,
+And does not encourage feeding the poor.
+So woe to those who pray,
+But are heedless of their prayer,
+Those who show off,
+And withhold small kindnesses.`,
 
-`Surah Quraysh (106)\n\nFor the accustomed security of Quraysh,\nTheir security in winter and summer journeys,\nLet them worship the Lord of this House,\nWho fed them from hunger and secured them from fear.`,
+`Surah Al-Kawthar (108)
+Indeed We have given you abundant goodness.
+So pray to your Lord and sacrifice.
+Indeed your enemy is the one cut off.`,
 
-`Surah Al-Ma’un (107)\n\nHave you seen the one who denies the Recompense?\nThat is the one who drives away the orphan,\nAnd does not encourage feeding the poor.\nSo woe to those who pray,\nBut are heedless of their prayer,\nThose who show off,\nAnd withhold small kindnesses.`,
+`Surah Al-Kafirun (109)
+Say: O disbelievers,
+I do not worship what you worship,
+Nor are you worshippers of what I worship.
+Nor will I worship what you worship,
+Nor will you worship what I worship.
+To you be your religion, and to me mine.`,
 
-`Surah Al-Kawthar (108)\n\nIndeed We have given you abundant goodness.\nSo pray to your Lord and sacrifice.\nIndeed your enemy is the one cut off.`,
+`Surah An-Nasr (110)
+When the victory of Allah has come and the conquest,
+And you see the people enter Allah’s religion in multitudes,
+Then glorify your Lord with praise and seek His forgiveness.
+Indeed, He is ever accepting of repentance.`,
 
-`Surah Al-Kafirun (109)\n\nSay: O disbelievers,\nI do not worship what you worship,\nNor are you worshippers of what I worship.\nNor will I worship what you worship,\nNor will you worship what I worship.\nTo you be your religion, and to me mine.`,
+`Surah Al-Lahab (111)
+May the hands of Abu Lahab be ruined, and ruined is he.
+His wealth will not help him.
+He will burn in a blazing fire,
+And his wife, the firewood carrier.
+Around her neck is a rope of fiber.`,
 
-`Surah An-Nasr (110)\n\nWhen the victory of Allah has come and the conquest,\nAnd you see the people enter Allah’s religion in multitudes,\nThen glorify your Lord with praise and seek His forgiveness.\nIndeed, He is ever accepting of repentance.`,
+`Surah Al-Ikhlas (112)
+Say: He is Allah, One.
+Allah, the Eternal Refuge.
+He neither begets nor is born.
+Nor is there anything comparable to Him.`,
 
-`Surah Al-Lahab (111)\n\nMay the hands of Abu Lahab be ruined, and ruined is he.\nHis wealth will not help him.\nHe will burn in a blazing fire,\nAnd his wife, the firewood carrier.\nAround her neck is a rope of fiber.`,
+`Surah Al-Falaq (113)
+Say: I seek refuge in the Lord of daybreak,
+From the evil of what He created,
+From the evil of darkness when it settles,
+From the evil of blowers in knots,
+And from the evil of an envier when he envies.`,
 
-`Surah Al-Ikhlas (112)\n\nSay: He is Allah, One.\nAllah, the Eternal Refuge.\nHe neither begets nor is born.\nNor is there anything comparable to Him.`,
+`Surah An-Nas (114)
+Say: I seek refuge in the Lord of mankind,
+The Sovereign of mankind,
+The God of mankind,
+From the evil of the whisperer who withdraws,
+Who whispers in the hearts of mankind,
+Of jinn and mankind.`,
 
-`Surah Al-Falaq (113)\n\nSay: I seek refuge in the Lord of daybreak,\nFrom the evil of what He created,\nFrom the evil of darkness when it settles,\nFrom the evil of blowers in knots,\nAnd from the evil of an envier when he envies.`,
+`Hadith 1
+The Prophet ﷺ said: “Actions are judged by intentions.” (Bukhari & Muslim)`,
 
-`Surah An-Nas (114)\n\nSay: I seek refuge in the Lord of mankind,\nThe Sovereign of mankind,\nThe God of mankind,\nFrom the evil of the whisperer who withdraws,\nWho whispers in the hearts of mankind,\nOf jinn and mankind.`,
+`Hadith 2
+“Whoever believes in Allah and the Last Day, let him speak good or remain silent.” (Bukhari)`,
 
-/* -------------- 20 HADITH ---------------- */
+`Hadith 3
+“A good word is charity.” (Bukhari)`,
 
-`Hadith 1\nThe Prophet ﷺ said: “Actions are judged by intentions.” (Bukhari & Muslim)`,
+`Hadith 4
+“The strong person is the one who controls himself when angry.” (Bukhari)`,
 
-`Hadith 2\n“Whoever believes in Allah and the Last Day, let him speak good or remain silent.” (Bukhari)`,
+`Hadith 5
+“Smiling at your brother is charity.” (Tirmidhi)`,
 
-`Hadith 3\n“A good word is charity.” (Bukhari)`,
+`Hadith 6
+“Allah is gentle and loves gentleness.” (Muslim)`,
 
-`Hadith 4\n“The strong person is the one who controls himself when angry.” (Bukhari)`,
+`Hadith 7
+“Make things easy, not difficult. Spread peace.” (Bukhari)`,
 
-`Hadith 5\n“Smiling at your brother is charity.” (Tirmidhi)`,
+`Hadith 8
+“Whoever does not thank people has not thanked Allah.” (Tirmidhi)`,
 
-`Hadith 6\n“Allah is gentle and loves gentleness.” (Muslim)`,
+`Hadith 9
+“The best among you are those best to their families.” (Tirmidhi)`,
 
-`Hadith 7\n“Make things easy, not difficult. Spread peace.” (Bukhari)`,
+`Hadith 10
+“None of you truly believes until he loves for his brother what he loves for himself.” (Bukhari)`,
 
-`Hadith 8\n“Whoever does not thank people has not thanked Allah.” (Tirmidhi)`,
+`Dua 1
+May Allah bless you with light, mercy, and peace.`,
 
-`Hadith 9\n“The best among you are those best to their families.” (Tirmidhi)`,
+`Dua 2
+May Allah grant you protection from harm and guide your heart.`,
 
-`Hadith 10\n“None of you truly believes until he loves for his brother what he loves for himself.” (Bukhari)`,
+`Dua 3
+May your home be filled with tranquility and barakah.`,
 
-`Hadith 11\n“The one who repents from sin is like one who never sinned.” (Ibn Majah)`,
+`Dua 4
+May Allah remove your worries and replace them with ease.`,
 
-`Hadith 12\n“Modesty is part of faith.” (Muslim)`,
+`Dua 5
+May Allah accept your prayers and forgive your sins.`,
 
-`Hadith 13\n“Seeking knowledge is obligatory for every Muslim.” (Ibn Majah)`,
+`Dua 6
+May Allah soften your heart and strengthen your faith.`,
 
-`Hadith 14\n“Charity does not decrease wealth.” (Muslim)`,
-
-`Hadith 15\n“Whoever follows a path seeking knowledge, Allah eases his path to Paradise.” (Muslim)`,
-
-`Hadith 16\n“The world is a prison for the believer and paradise for the disbeliever.” (Muslim)`,
-
-`Hadith 17\n“Allah does not burden a soul beyond what it can bear.” (Quran confirmed)`,
-
-`Hadith 18\n“Your body has a right over you.” (Bukhari)`,
-
-`Hadith 19\n“Whoever relieves a believer of distress, Allah will relieve his distress.” (Muslim)`,
-
-`Hadith 20\n“The closest to me on the Day of Judgment are those with the best character.” (Tirmidhi)`,
-
-/* ---------------- 7 DUAS ---------------- */
-
-`Dua\nMay Allah bless you with light, mercy, and peace.`,
-
-`Dua\nMay Allah grant you protection from harm and guide your heart.`,
-
-`Dua\nMay your home be filled with tranquility and barakah.`,
-
-`Dua\nMay Allah remove your worries and replace them with ease.`,
-
-`Dua\nMay Allah accept your prayers and forgive your sins.`,
-
-`Dua\nMay Allah soften your heart and strengthen your faith.`,
-
-`Dua\nMay Allah grant you happiness in this life and the next.`,
-
+`Dua 7
+May Allah grant you happiness in this life and the next.`
 ];
 
-const leaves = document.querySelectorAll('.leaf');
-const message = document.getElementById('message');
+const container = document.querySelector('.container');
+const modal = document.getElementById('modal');
+const modalText = document.getElementById('modal-text');
+const closeBtn = document.getElementById('close');
 
-leaves.forEach(leaf => {
-  leaf.addEventListener('click', () => {
+function showBlessing() {
+  const index = Math.floor(Math.random() * blessings.length);
+  modalText.textContent = blessings[index];
+  modal.style.display = 'flex';
+}
 
-    const randomIndex = Math.floor(Math.random() * blessings.length);
-    message.textContent = blessings[randomIndex];
-    message.style.opacity = 0;
-    setTimeout(() => { message.style.opacity = 1; }, 50);
+// Click leaves to show blessings
+function createLeaf() {
+  const leaf = document.createElement('img');
+  leaf.src = 'leaf.png';
+  leaf.classList.add('leaf');
 
-    for (let i = 0; i < 15; i++) {
-      const fl = document.createElement('div');
-      fl.classList.add('falling-leaf');
-      fl.style.left = (Math.random() * window.innerWidth) + "px";
-      fl.style.animationDuration = (3 + Math.random() * 3) + "s";
-      document.body.appendChild(fl);
+  const size = Math.random() * 20 + 20;
+  leaf.style.width = size + 'px';
+  leaf.style.left = Math.random() * 420 + 'px';
+  const duration = Math.random() * 3 + 4;
+  leaf.style.animationDuration = duration + 's';
 
-      setTimeout(() => fl.remove(), 6000);
-    }
-  });
-});
+  leaf.addEventListener('click', showBlessing);
+
+  container.appendChild(leaf);
+  setTimeout(() => leaf.remove(), duration * 1000);
+}
+
+// Create many leaves continuously
+setInterval(createLeaf, 500);
+
+// Close modal
+closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+modal.addEventListener('click', (e) => { if(e.target===modal) modal.style.display='none'; });
+
 </script>
-
 </body>
 </html>
