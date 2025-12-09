@@ -25,25 +25,23 @@
 
     #tree-container {
       position: relative;
-      width: 300px;
-      height: 400px;
+      width: 350px;
+      height: 450px;
       background: url('tree.jpg') no-repeat center bottom;
       background-size: contain;
     }
 
     .leaf {
       position: absolute;
-      width: 30px;
-      height: 30px;
-      background-color: #4caf50;
-      border-radius: 50%;
+      width: 40px;
+      height: 40px;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.3s;
+      transition: transform 0.3s, filter 0.3s;
     }
 
     .leaf:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 15px #ffd700;
+      transform: scale(1.3) rotate(-15deg);
+      filter: drop-shadow(0 0 10px #ffd700);
     }
 
     #message {
@@ -52,7 +50,7 @@
       background-color: #ffffffcc;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 300px;
+      max-width: 320px;
       text-align: left;
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
@@ -63,10 +61,10 @@
 
     .falling-leaf {
       position: absolute;
-      width: 15px;
-      height: 15px;
-      background-color: #4caf50;
-      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      background: url('leaf.png') no-repeat center center;
+      background-size: contain;
       opacity: 0.8;
       animation: fall linear infinite;
     }
@@ -79,159 +77,89 @@
 </head>
 <body>
   <h1>Tree of Blessings 🌿</h1>
+
   <div id="tree-container">
-    <div class="leaf" style="top: 50px; left: 50px;"></div>
-    <div class="leaf" style="top: 80px; left: 200px;"></div>
-    <div class="leaf" style="top: 150px; left: 100px;"></div>
-    <div class="leaf" style="top: 180px; left: 180px;"></div>
-    <div class="leaf" style="top: 250px; left: 130px;"></div>
+    <img src="leaf.png" class="leaf" style="top: 50px; left: 40px;">
+    <img src="leaf.png" class="leaf" style="top: 70px; left: 200px;">
+    <img src="leaf.png" class="leaf" style="top: 150px; left: 100px;">
+    <img src="leaf.png" class="leaf" style="top: 180px; left: 180px;">
+    <img src="leaf.png" class="leaf" style="top: 250px; left: 130px;">
   </div>
 
   <div id="message">Click a leaf to receive a blessing!</div>
 
-  <!-- Soft background audio -->
   <audio autoplay loop>
     <source src="soft_nasheed.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
   </audio>
 
   <script>
     const blessings = [
-      // Surahs (101–114 full text)
-      `Surah Al-Qari’ah (101):
-The Striking Calamity –
-What is the Striking Calamity?
-And what can make you know what is the Striking Calamity?
-The Day when people will be like scattered moths,
-And the mountains will be like wool fluffed up.
-Then as for one whose scales are heavy [with good deeds],
-He will be in a pleasant life.
-But as for one whose scales are light,
-His refuge will be an abyss.`,
+      /* ------------------ SURAH 101–114 (complete) ------------------ */
 
-      `Surah At-Takathur (102):
-Competition in worldly increase diverts you.
-Until you visit the graves.
-No! You will surely know.
-Then no! You will surely know.
-No! If you only knew with certainty…
-You will surely see the Hellfire.
-Then you will surely see it with the eye of certainty.`,
+"📖 Surah Al-Qari'ah (101)\n\nBismillahir-Rahmanir-Raheem\nAl-Qari'ah\nMal-Qari'ah\nWa maa adraaka mal-Qari'ah\nYawma yakoonun-naasu kal-farashil-mabthooth\nWatakoonul-jibaalu kal-ihnil-manfhoor\nFa-amma man thaqulat mawaazeenuhu\nFahuwa fee 'eeshatir-raadiyah\nWa-amma man khaffat mawaazeenuhu\nFa-ummuhu haawiyah\nWa maa adraaka maa hiyah\nNaarun haamiyah",
 
-      `Surah Al-Asr (103):
-By time,
-Indeed, mankind is in loss,
-Except for those who believe and do righteous deeds and advise each other to truth and advise each other to patience.`,
+"📖 Surah At-Takathur (102)\n\nBismillahir-Rahmanir-Raheem\nAlhakumut-takathur\nHatta zurtumul-maqaabir\nKalla sawfa ta'lamoon\nThumma kalla sawfa ta'lamoon\nKalla law ta'lamoona 'ilmal-yaqeen\nLatarawunnal-jaheem\nThumma latarawunnaha 'aynal-yaqeen\nThumma latus'alunna yawma-idhin 'anin-na'eem",
 
-      `Surah Al-Humazah (104):
-Woe to every scorner and mocker
-Who collects wealth and [continuously] counts it.
-He thinks that his wealth will make him immortal.
-No! He will surely be thrown into the Crusher.
-And what can make you know what the Crusher is?
-It is the Fire of Allah, [eternally] fueled,
-Which mounts directed at the hearts.
-Indeed, it [Hellfire] will be closed down upon them
-In extended columns.`,
+"📖 Surah Al-Asr (103)\n\nBismillahir-Rahmanir-Raheem\nWal-Asr\nInnal-insaana lafee khusr\nIllal-ladheena aamanu wa 'amilus-saalihaat watawaasaw bil-haqqi watawaasaw bis-sabr",
 
-      `Surah Al-Fil (105):
-Have you not considered how your Lord dealt with the companions of the elephant?
-Did He not make their plan into misguidance?
-And He sent against them birds in flocks,
-Striking them with stones of hard clay,
-And made them like eaten straw.`,
+"📖 Surah Al-Humazah (104)\n\nBismillahir-Rahmanir-Raheem\nWaylul likulli humazatil-lumazah\nAlladhee jama'a maalan wa 'addadah\nYahsabu anna maalahu akhladah\nKalla layunbathanna fil-hutamah\nWa maa adraaka mal-hutamah\nNaarullahi al-mooqadah\nAllatee tat-tali'u 'alal-af'idah\nInnaha 'alayhim mu'sadah\nFee 'amadim mumaddadah",
 
-      `Surah Quraysh (106):
-For the accustomed security of the Quraysh –
-Their accustomed security [during] the caravan of winter and summer –
-Let them worship the Lord of this House,
-Who has fed them, [saving them] from hunger and made them safe, [saving them] from fear.`,
+"📖 Surah Al-Fil (105)\n\nBismillahir-Rahmanir-Raheem\nAlam tara kayfa fa'ala rabbuka bi ashaabil-feel\nAlam yaj'al kaydahum fee tadleel\nWa arsal 'alayhim tayran abaabeel\nTarmeehim bi hijaaratin min sijjeel\nFaja'alahum ka'asfim ma'kool",
 
-      `Surah Al-Ma’un (107):
-Have you seen the one who denies the Recompense?
-For that is the one who drives away the orphan,
-And does not encourage the feeding of the poor.
-So woe to those who pray
-[But] who are heedless of their prayer –
-Those who make show [of their deeds]
-And withhold [simple] assistance.`,
+"📖 Surah Quraysh (106)\n\nBismillahir-Rahmanir-Raheem\nLi'eelaafi Quraysh\nEelaafihim rihlatas-shitaa'i was-sayf\nFal-ya'budoo rabba haathal-bayt\nAlladhee at'amahum min joo'in wa aamanahum min khawf",
 
-      `Surah Al-Kawthar (108):
-Indeed, We have granted you, [O Muhammad], al-Kawthar.
-So pray to your Lord and sacrifice [to Him alone].
-Indeed, your enemy is the one cut off.`,
+"📖 Surah Al-Ma'un (107)\n\nBismillahir-Rahmanir-Raheem\nAra'ayta alladhee yukadh-dhibu bid-deen\nFa-dhalika alladhee yadu''ul-yateem\nWala yahuddu 'alaa ta'aamil-miskeen\nFawaylul-lil-musalleen\nAlladheena hum 'an salaatihim saahoon\nAlladheena hum yuraaoon\nWa yamna'oonal ma'oon",
 
-      `Surah Al-Kafirun (109):
-Say, “O disbelievers,
-I do not worship what you worship.
-Nor are you worshippers of what I worship.
-Nor will I be a worshipper of what you worship.
-Nor will you be worshippers of what I worship.
-For you is your religion, and for me is my religion.”`,
+"📖 Surah Al-Kawthar (108)\n\nBismillahir-Rahmanir-Raheem\nInnaa a'taynaakal-kawthar\nFasalli li rabbika wanhar\nInna shaani'aka huwal-abtar",
 
-      `Surah An-Nasr (110):
-When the victory of Allah has come and the conquest,
-And you see the people entering into the religion of Allah in multitudes,
-Then exalt [Him] with praise of your Lord and ask forgiveness of Him. Indeed, He is ever Accepting of repentance.`,
+"📖 Surah Al-Kafirun (109)\n\nBismillahir-Rahmanir-Raheem\nQul yaa ayyuhal-kaafiroon\nLaa a'budu maa ta'budoon\nWala antum 'aabidoona maa a'bud\nWala ana 'abidum maa 'abattum\nWala antum 'aabidoona maa a'bud\nLakum deenukum waliya deen",
 
-      `Surah Al-Lahab (111):
-May the hands of Abu Lahab be ruined, and ruined is he.
-His wealth will not avail him or that which he gained.
-He will [enter to] burn in a Fire of [blazing] flame
-And his wife [as well] – the carrier of firewood.
-Around her neck is a rope of twisted fiber.`,
+"📖 Surah An-Nasr (110)\n\nBismillahir-Rahmanir-Raheem\nItha jaa'a nasrullahi wal-fath\nWa ra-aytan-naasa yadkhuloona fee deenillahi afwaaja\nFasabbih bihamdi rabbika wastaghfirh innahu kaana tawwaaba",
 
-      `Surah Al-Ikhlas (112):
-Say, “He is Allah, [who is] One,
-Allah, the Eternal Refuge.
-He neither begets nor is born,
-Nor is there to Him any equivalent.”`,
+"📖 Surah Al-Lahab (111)\n\nBismillahir-Rahmanir-Raheem\nTabbat yadaa abee lahabinw wa tabb\nMa aghnaa 'anhu maaluhu wa maa kasab\nSayaslaa naaran dhaata lahab\nWamra-atuhu hammaatal-hatab\nFee jeedihaa hablun min masad",
 
-      `Surah Al-Falaq (113):
-Say, “I seek refuge in the Lord of daybreak
-From the evil of that which He created
-And from the evil of darkness when it settles
-And from the evil of the blowers in knots
-And from the evil of an envier when he envies.”`,
+"📖 Surah Al-Ikhlas (112)\n\nBismillahir-Rahmanir-Raheem\nQul huwallahu ahad\nAllahus-samad\nLam yalid wa lam yoolad\nWa lam yakun lahu kufuwan ahad",
 
-      `Surah An-Nas (114):
-Say, “I seek refuge in the Lord of mankind,
-The Sovereign of mankind,
-The God of mankind,
-From the evil of the whisperer who withdraws,
-Who whispers in the breasts of mankind,
-Of jinn and mankind.”`,
+"📖 Surah Al-Falaq (113)\n\nBismillahir-Rahmanir-Raheem\nQul a'oothu bi rabbil-falaq\nMin sharri maa khalaq\nWa min sharri ghaasiqin idhaa waqab\nWa min sharrin-naffaaathaati fil-'uqad\nWa min sharri haasidin idhaa hasad",
 
-      // Hadiths (20 items)
-      "Hadith (Sahih Bukhari 6011): 'The best of you are those who are best to their families.'",
-      "Hadith (Sahih Muslim 2564): 'Actions are judged by intentions, and everyone will be rewarded according to what he intended.'",
-      "Hadith (Riyad as-Salihin 14): 'A good word is charity.'",
-      "Hadith (Sunan Abu Dawood 2841): 'Smiling at your brother is charity.'",
-      "Hadith (Sahih Bukhari 5685): 'Seek knowledge from cradle to grave.'",
-      "Hadith (Sahih Muslim 2699): 'The strong believer is better and more beloved to Allah than the weak believer, while there is good in both.'",
-      "Hadith (Sahih Bukhari 6031): 'The best among you are those who learn the Qur’an and teach it.'",
-      "Hadith (Sahih Muslim 2603): 'Feed the hungry and visit the sick.'",
-      "Hadith (Sahih Muslim 2629): 'None of you truly believes until he loves for his brother what he loves for himself.'",
-      "Hadith (Sahih Muslim 2318): 'He who does not show mercy to others will not be shown mercy.'",
-      "Hadith (Sunan Tirmidhi 1987): 'The one who guides to something good has a reward similar to its doer.'",
-      "Hadith (Sahih Bukhari 3463): 'Pray as you have seen me praying.'",
-      "Hadith (Sahih Muslim 2233): 'Do not waste water, even if you perform ablution on a flowing river.'",
-      "Hadith (Sahih Muslim 2625): 'Allah is gentle and loves gentleness in all matters.'",
-      "Hadith (Sunan Ibn Majah 4333): 'He who does not show gratitude to people, does not show gratitude to Allah.'",
-      "Hadith (Sahih Bukhari 6114): 'The most beloved actions to Allah are those done consistently, even if small.'",
-      "Hadith (Sahih Muslim 2589): 'Avoid suspicion, for suspicion is the worst of false tales.'",
-      "Hadith (Sahih Bukhari 2322): 'A Muslim is one from whose tongue and hand other Muslims are safe.'",
-      "Hadith (Sahih Muslim 2230): 'The best of you are those who learn the Qur’an and teach it.'",
-      "Hadith (Sunan Abu Dawood 2859): 'Help your brother, whether he is an oppressor or he is oppressed.'",
+"📖 Surah An-Nas (114)\n\nBismillahir-Rahmanir-Raheem\nQul a'oothu bi rabbin-naas\nMalikin-naas\nIlaahin-naas\nMin sharril-waswaasil-khannaas\nAlladhee yuwaswisu fee sudoorin-naas\nMinal-jinnati wan-naas",
 
-      // Duas (7 items)
-      "Dua: May Allah bless you with health, guidance, and tranquility.",
-      "Dua: May your deeds be accepted and your heart be content.",
-      "Dua: May Allah protect you and your family from harm.",
-      "Dua: May Allah shower mercy upon you and guide your steps.",
-      "Dua: May your life be filled with barakah, peace, and joy.",
-      "Dua: May Allah increase your knowledge and wisdom.",
-      "Dua: May your heart be always patient and grateful."
+/* ------------------ 20 HADITH (complete, short but full meaning) ------------------ */
+
+"Hadith 1: “Actions are judged by intentions.” – Bukhari & Muslim",
+"Hadith 2: “The best among you are those with the best manners.” – Bukhari",
+"Hadith 3: “Whoever believes in Allah and the Last Day, let him speak good or remain silent.” – Bukhari",
+"Hadith 4: “A smile is charity.” – Tirmidhi",
+"Hadith 5: “Allah does not look at your appearance or wealth, but at your hearts and deeds.” – Muslim",
+"Hadith 6: “Make things easy, do not make things difficult.” – Bukhari",
+"Hadith 7: “The strong person is the one who controls himself when angry.” – Bukhari",
+"Hadith 8: “Whoever is not grateful to people is not grateful to Allah.” – Tirmidhi",
+"Hadith 9: “The most beloved deeds to Allah are those done consistently.” – Bukhari",
+"Hadith 10: “Seek knowledge from the cradle to the grave.”",
+"Hadith 11: “Modesty is part of faith.” – Muslim",
+"Hadith 12: “None of you truly believes until he loves for his brother what he loves for himself.” – Bukhari",
+"Hadith 13: “Mercy is not removed except from the wretched.” – Tirmidhi",
+"Hadith 14: “The reward of deeds depends on the intentions behind them.” – Bukhari",
+"Hadith 15: “Cleanliness is half of faith.” – Muslim",
+"Hadith 16: “When Allah loves a servant, He tests him.” – Tirmidhi",
+"Hadith 17: “The best charity is water.” – Abu Dawood",
+"Hadith 18: “He who does not show mercy will not be shown mercy.” – Bukhari",
+"Hadith 19: “Do not harm and do not reciprocate harm.” – Ibn Majah",
+"Hadith 20: “Whoever follows a path seeking knowledge, Allah will make his path to Jannah easy.” – Muslim",
+
+/* ------------------ 10 DUAS ------------------ */
+
+"🌿 Dua 1: “Rabbana atina fid-dunya hasanah wa fil-akhirati hasanah waqina adhaban-nar.”",
+"🌿 Dua 2: “Allahumma inni a'udhu bika minal-hammi wal-huzn.”",
+"🌿 Dua 3: “Hasbunallahu wa ni'mal wakeel.”",
+"🌿 Dua 4: “Rabbishrah li sadri wa yassir li amri.”",
+"🌿 Dua 5: “Allahumma inni as’aluka 'afwa wal-'afiyah.”",
+"🌿 Dua 6: “Astaghfirullah wa atubu ilayh.”",
+"🌿 Dua 7: “La hawla wa la quwwata illa billah.”",
+"🌿 Dua 8: “Rabbi zidni ilma.”",
+"🌿 Dua 9: “Ya Allah, make my affairs easy.”",
+"🌿 Dua 10: “Allahumma inni as’aluka rizqan tayyiban, wa 'ilman nafi'an, wa 'amalan mutaqabbalan.”"
+
     ];
 
     const leaves = document.querySelectorAll('.leaf');
@@ -244,11 +172,10 @@ Of jinn and mankind.”`,
         message.style.opacity = 0;
         setTimeout(() => { message.style.opacity = 1; }, 50);
 
-        // Falling leaves effect
         for(let i=0;i<20;i++){
           const confetti = document.createElement('div');
           confetti.classList.add('falling-leaf');
-          confetti.style.left = (Math.random()*300) + "px";
+          confetti.style.left = (Math.random()*window.innerWidth) + "px";
           confetti.style.animationDuration = (2 + Math.random()*2) + "s";
           document.body.appendChild(confetti);
           setTimeout(()=>confetti.remove(),4000);
@@ -256,7 +183,6 @@ Of jinn and mankind.”`,
       });
     });
 
-    // Continuous background falling leaves
     function createFallingLeaf(){
       const leaf = document.createElement('div');
       leaf.classList.add('falling-leaf');
